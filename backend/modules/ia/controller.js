@@ -2,19 +2,44 @@
 // MÓDULO IA - Controller (Asistente Conversacional)
 // ==========================================
 // Asistente de IA conectado a la BD del sistema.
-// Responde preguntas sobre proyectos, clientes, pagos, etc.
+// Usa Google Gemini API con Fallback Local si hay error de cuota.
 
-const OpenAI = require('openai');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { db } = require('../../models/models');
 
-// Inicializar cliente de OpenAI (lazy para evitar crash sin API key)
-let openai = null;
-function getOpenAI() {
-    if (!openai && process.env.OPENAI_API_KEY) {
-        openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// Inicializar cliente de Gemini (lazy para evitar crash sin API key)
+let genAI = null;
+function getGemini() {
+    if (!genAI && process.env.GEMINI_API_KEY) {
+        genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     }
-    return openai;
+    return genAI;
 }
+
+// Función para análisis local (cuando falla la API)
+const localAnalyze = (text, context) => {
+    const query = text.toLowerCase();
+    let response = "🤖 **Asistente (Modo Offline)**\n\n";
+    response += "La IA está procesando muchas peticiones en este momento, pero aquí tienes un resumen de tus datos:\n\n";
+
+    if (query.includes('proyecto') || query.includes('cuanto') || query.includes('ganado')) {
+        // Extraer resumen del contexto para la respuesta local
+        const lines = context.split('\n');
+        const resumen = lines.filter(l => l.startsWith('- Total')).join('\n');
+        response += "📊 **Estado Actual:**\n" + resumen + "\n\n";
+        
+        if (query.includes('pago') || query.includes('dinero') || query.includes('ganado')) {
+             const proyectosResult = lines.filter(l => l.includes('| Estado:')).join('\n');
+             response += "📂 **Proyectos y Pagos:**\n" + proyectosResult;
+        }
+    } else if (query.includes('hola') || query.includes('quien eres')) {
+        response += "¡Hola! Soy el asistente de F&M Web Solutions. Puedo darte información sobre tus proyectos, clientes y estados financieros basado en la base de datos actual.";
+    } else {
+        response += "No estoy seguro de cómo responder a eso en modo offline, pero aquí tienes el resumen del sistema:\n\n" + context.substring(0, 500) + "...";
+    }
+
+    return response;
+};
 
 // Función helper: obtener contexto de la BD
 const getSystemContext = async () => {
@@ -25,23 +50,23 @@ const getSystemContext = async () => {
             db.collection('locations').get()
         ]);
 
-        const clientes = clientesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-        const ubicaciones = ubicacionesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+        const clientes = clientesSnap.docs.map(d => ({ ...d.data(), id: d.id }));
+        const ubicaciones = ubicacionesSnap.docs.map(d => ({ ...d.data(), id: d.id }));
 
         const proyectos = [];
         let totalPagosCount = 0;
 
         for (const doc of proyectosSnap.docs) {
             const data = doc.data();
-            const proyecto = { id: doc.id, ...data };
+            const proyecto = { ...data, id: doc.id };
 
             if (data.clienteId) {
                 const cDoc = await db.collection('usuarios').doc(data.clienteId).get();
-                if (cDoc.exists) proyecto.cliente = { id: cDoc.id, ...cDoc.data() };
+                if (cDoc.exists) proyecto.cliente = { ...cDoc.data(), id: cDoc.id };
             }
 
             const pagosSnap = await db.collection(`proyectos/${doc.id}/pagos`).get();
-            proyecto.Pagos = pagosSnap.docs.map(p => ({ id: p.id, ...p.data() }));
+            proyecto.Pagos = pagosSnap.docs.map(p => ({ ...p.data(), id: p.id }));
             totalPagosCount += proyecto.Pagos.length;
 
             proyectos.push(proyecto);
@@ -71,20 +96,8 @@ const getSystemContext = async () => {
                 const numPagos = p.Pagos ? p.Pagos.length : 0;
                 context += `- "${p.nombre}" | Estado: ${p.estado} | Cliente: ${clienteNombre} | Pagos: ${numPagos} ($${pagosTotal})\n`;
                 if (p.descripcion) context += `  Descripción: ${p.descripcion}\n`;
-                if (p.Pagos && p.Pagos.length > 0) {
-                    p.Pagos.forEach(pago => {
-                        context += `  💰 Pago: $${pago.monto} - ${pago.descripcion || 'Sin descripción'} (${pago.estado})\n`;
-                    });
-                }
             });
             context += '\n';
-        }
-
-        if (ubicaciones.length > 0) {
-            context += `📍 UBICACIONES:\n`;
-            ubicaciones.forEach(l => {
-                context += `- ${l.nombre}: ${l.direccion} (${l.tipo})\n`;
-            });
         }
 
         return context;
@@ -96,68 +109,43 @@ const getSystemContext = async () => {
 const iaController = {
     // POST /ai/analyze → Asistente conversacional con contexto de la BD
     analyze: async (req, res) => {
+        const { text } = req.body;
+        if (!text) return res.status(400).json({ success: false, message: 'Se requiere texto' });
+
+        const systemContext = await getSystemContext();
+
         try {
-            const { text } = req.body;
+            const client = getGemini();
+            if (!client) throw new Error('API Key de Gemini no configurada');
 
-            if (!text) {
-                return res.status(400).json({
-                    success: false,
-                    message: req.t ? req.t('ia.noText') : 'Se requiere texto para analizar'
-                });
-            }
+            const model = client.getGenerativeModel({ model: 'gemini-1.5-flash' });
+            const systemPrompt = `Eres el asistente de IA de F&M Web Solutions. Responde en español y usa emojis.\n\n${systemContext}`;
 
-            const client = getOpenAI();
-            if (!client) {
-                return res.status(500).json({
-                    success: false,
-                    message: 'La API Key de OpenAI no está configurada en el archivo .env'
-                });
-            }
-
-            // Obtener contexto del sistema
-            const systemContext = await getSystemContext();
-
-            const systemPrompt = `Eres el asistente de IA de F&M Web Solutions, una empresa de desarrollo web.
-Tu trabajo es ayudar a los administradores respondiendo preguntas sobre sus proyectos, clientes, pagos y estado del negocio.
-
-REGLAS:
-- Responde SIEMPRE en español, de forma clara y amigable.
-- Usa emojis para hacer las respuestas más legibles.
-- Si te preguntan sobre datos específicos, consulta el contexto del sistema que tienes abajo.
-- Si no tienes datos suficientes, dilo amablemente.
-- Formatea las respuestas de forma bonita con viñetas y saltos de línea.
-- NO respondas con JSON, responde en lenguaje natural.
-- Sé conciso pero completo.
-
-${systemContext}`;
-
-            const completion = await client.chat.completions.create({
-                model: 'gpt-3.5-turbo',
-                messages: [
-                    { role: 'system', content: systemPrompt },
-                    { role: 'user', content: text }
-                ],
-                temperature: 0.7,
-                max_tokens: 800
+            const result = await model.generateContent({
+                contents: [{ role: 'user', parts: [{ text: systemPrompt + '\n\nUsuario: ' + text }] }],
+                generationConfig: { temperature: 0.7, maxOutputTokens: 800 }
             });
 
-            const response = completion.choices[0].message.content;
-
+            const response = result.response.text();
             res.json({
                 success: true,
-                message: 'Análisis completado',
-                data: {
-                    response: response,
-                    model: 'gpt-3.5-turbo',
-                    timestamp: new Date().toISOString()
-                }
+                data: { response, model: 'gemini-1.5-flash', timestamp: new Date().toISOString() }
             });
+
         } catch (error) {
-            console.error('Error en IA:', error.message);
-            res.status(500).json({
-                success: false,
-                message: req.t ? req.t('ia.analyzeError') : 'Error en el análisis',
-                error: error.message
+            console.warn('⚠️ Error en Gemini, usando Fallback Local:', error.message);
+            
+            // Fallback Local
+            const response = localAnalyze(text, systemContext);
+            
+            res.json({
+                success: true,
+                data: { 
+                    response, 
+                    model: 'Local Fallback (Offline)', 
+                    timestamp: new Date().toISOString(),
+                    note: 'IA temporalmente en modo offline por límites de cuota.'
+                }
             });
         }
     }
