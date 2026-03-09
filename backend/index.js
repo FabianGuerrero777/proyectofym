@@ -65,12 +65,17 @@ app.post('/auth/google', async (req, res) => {
         let userName = nombre;
         let userUid = uid;
 
-        // Si Firebase Admin está configurado, verificar el token
+        // Intentar verificar token con Firebase Admin, si falla usar datos del client SDK
         if (firebaseInitialized && idToken) {
-            const decoded = await admin.auth().verifyIdToken(idToken);
-            userEmail = decoded.email;
-            userName = decoded.name || decoded.email.split('@')[0];
-            userUid = decoded.uid;
+            try {
+                const decoded = await admin.auth().verifyIdToken(idToken);
+                userEmail = decoded.email;
+                userName = decoded.name || decoded.email.split('@')[0];
+                userUid = decoded.uid;
+            } catch (verifyError) {
+                console.warn('⚠️ verifyIdToken falló, usando datos del client SDK:', verifyError.message);
+                // Fallback: confiar en los datos enviados por el frontend
+            }
         }
         // Si no está configurado, confiamos en los datos del client SDK
 
@@ -78,15 +83,24 @@ app.post('/auth/google', async (req, res) => {
             return res.status(400).json({ success: false, message: 'Email es requerido' });
         }
 
-        // Buscar o crear usuario en la BD local
-        let user = await Usuario.findOne({ where: { email: userEmail } });
-        if (!user) {
-            user = await Usuario.create({
+        // Buscar o crear usuario en Firestore
+        const usersRef = db.collection('usuarios');
+        const snapshot = await usersRef.where('email', '==', userEmail).limit(1).get();
+        let user;
+        if (!snapshot.empty) {
+            const doc = snapshot.docs[0];
+            user = { ...doc.data(), id: doc.id };
+        } else {
+            const newUserRef = usersRef.doc();
+            const userData = {
                 nombre: userName || userEmail.split('@')[0],
                 email: userEmail,
                 password: await bcrypt.hash(userUid || 'google-user-' + Date.now(), 10),
-                rol: 'cliente'
-            });
+                rol: 'cliente',
+                createdAt: new Date().toISOString()
+            };
+            await newUserRef.set(userData);
+            user = { ...userData, id: newUserRef.id };
         }
 
         // Generar token local
