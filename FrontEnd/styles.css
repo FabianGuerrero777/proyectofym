@@ -1,0 +1,341 @@
+/* ==========================================
+   F&M WEB - Estilos Landing + Dashboard
+   ========================================== */
+
+/* 1. Variables y Fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --bg-dark: #0f0f1a;
+    --accent-pink: #ec4899;
+    --accent-purple: #8b5cf6;
+    --text-gray: #9ca3af;
+}
+
+/* 2. Reset base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', 'Inter', sans-serif;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+/* 3. Gradiente de fondo Mesh ultra dinámico (Dark Mode) */
+.mesh-gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: 
+        radial-gradient(circle at 10% 20%, rgba(236, 72, 153, 0.3) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.3) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.2) 0%, transparent 60%);
+    background-size: 200% 200%;
+    z-index: -1;
+    filter: blur(60px);
+    animation: meshMoveUltra 15s ease-in-out infinite alternate, colorPulse 10s ease-in-out infinite alternate;
+}
+
+@keyframes meshMoveUltra {
+    0% { transform: scale(1) translate(0, 0); background-position: 0% 0%; }
+    50% { transform: scale(1.1) translate(-20px, 30px); background-position: 100% 100%; }
+    100% { transform: scale(1.2) translate(20px, -20px); background-position: 0% 100%; }
+}
+
+@keyframes colorPulse {
+    0% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+/* 4. Gradiente de texto */
+.text-gradient {
+    background: linear-gradient(135deg, #ffffff 30%, var(--accent-pink) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Light mode: gradiente diferente para que se vea */
+.light-text-gradient {
+    background: linear-gradient(135deg, #1e293b 30%, var(--accent-pink) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* 5. Botón principal */
+.btn-primary {
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(236, 72, 153, 0);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 0 25px rgba(236, 72, 153, 0.3);
+    transform: translateY(-2px);
+}
+
+/* 6. Indicador de scroll */
+.scroll-indicator {
+    width: 26px;
+    height: 44px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    position: relative;
+}
+
+.scroll-indicator::before {
+    content: '';
+    width: 4px;
+    height: 8px;
+    background: white;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 8px;
+    border-radius: 2px;
+    animation: scrollDot 2s infinite;
+}
+
+@keyframes scrollDot {
+    0% { opacity: 0; top: 8px; }
+    50% { opacity: 1; }
+    100% { opacity: 0; top: 24px; }
+}
+
+/* 7. Glassmorphism */
+.card-glass {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================
+   8. Modal de Login
+   ========================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================
+   9. Dashboard Styles
+   ========================================== */
+.dashboard-container {
+    animation: fadeIn 0.4s ease;
+}
+
+/* Badges de estado */
+.status-pendiente {
+    background: rgba(234, 179, 8, 0.15);
+    color: #eab308;
+    border: 1px solid rgba(234, 179, 8, 0.3);
+}
+
+.status-desarrollo {
+    background: rgba(14, 165, 233, 0.15);
+    color: #0ea5e9;
+    border: 1px solid rgba(14, 165, 233, 0.3);
+}
+
+.status-finalizado {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+/* Tabla de usuarios */
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.users-table th {
+    text-align: left;
+    padding: 12px;
+    font-weight: 600;
+}
+
+.users-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.users-table tr:hover td {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* Light mode table */
+.light .users-table td {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* ==========================================
+   10. Animaciones hover para cards
+   ========================================== */
+.project-card {
+    transition: all 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-2px);
+}
+
+/* ==========================================
+   11. Scrollbar personalizado (dark mode)
+   ========================================== */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* ==========================================
+   12. Transición suave al cambiar idioma
+   ========================================== */
+.lang-fade-out {
+    opacity: 0;
+    transition: opacity 0.25s ease-out;
+}
+
+.lang-fade-in {
+    opacity: 1;
+    transition: opacity 0.3s ease-in;
+}
+
+/* ==========================================
+   13. Estado: En Espera de Pago
+   ========================================== */
+.status-espera-pago {
+    background: rgba(249, 115, 22, 0.15);
+    color: #f97316;
+    border: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+/* ==========================================
+   14. Botón de Google Sign-In
+   ========================================== */
+.google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    background: transparent;
+    color: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.google-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.google-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Light mode google button */
+html:not(.dark) .google-btn {
+    border-color: #e2e8f0;
+    color: #1e293b;
+}
+
+html:not(.dark) .google-btn:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+/* ==========================================
+   15. Panel de IA
+   ========================================== */
+.ia-panel-response {
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 300px;
+    overflow-y: auto;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.ia-typing {
+    display: inline-block;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* Divider */
+.divider-or {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 0;
+    color: #64748b;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.divider-or::before,
+.divider-or::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+html:not(.dark) .divider-or::before,
+html:not(.dark) .divider-or::after {
+    background: #e2e8f0;
+}

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F&M WEB - Plataforma de Gestión</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Iconos (Opcional, usando emoji por ahora) -->
+</head>
+
+<body>
+
+    <!-- SECCIÓN DE LOGIN -->
+    <section id="login-section">
+        <h1>🔐 F&M WEB Login</h1>
+        <div class="form-group">
+            <label>Correo Electrónico</label>
+            <input type="email" id="email" placeholder="admin@fmweb.com">
+        </div>
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" id="password" placeholder="******">
+        </div>
+        <button onclick="login()">Ingresar</button>
+        <p style="margin-top: 15px; text-align: center; font-size: 0.9rem;">
+            <a href="#" onclick="crearDatosPrueba()" style="color: var(--accent);">
+                🛠️ Click aquí para crear Admin de prueba
+            </a>
+        </p>
+    </section>
+
+    <!-- DASHBOARD PRINCIPAL (Oculto al inicio) -->
+    <section id="dashboard-section" class="hidden">
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <div>
+                <h2 style="margin:0;">Hola, <span id="usuario-nombre">Usuario</span> 👋</h2>
+                <p id="usuario-rol"
+                    style="color: var(--text-secondary); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">
+                    Rol</p>
+            </div>
+            <button onclick="logout()" class="logout-btn" style="width: auto;">Cerrar Sesión</button>
+        </header>
+
+        <!-- PANEL ADMIN (Solo visible para admin) -->
+        <div id="admin-controls" class="hidden"
+            style="margin-bottom: 2rem; background: var(--bg-color); padding: 1rem; border-radius: 8px;">
+            <h3>⚡ Acciones de Administrador</h3>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <!-- Crear Proyecto -->
+                <div class="card" style="border-left: 3px solid var(--accent);">
+                    <h4>Nuevo Proyecto</h4>
+                    <input type="text" id="nuevo-titulo" placeholder="Nombre del Proyecto">
+                    <input type="text" id="nuevo-desc" placeholder="Descripción">
+                    <!-- Select de clientes se llenará dinámicamente -->
+                    <select id="nuevo-cliente-id"
+                        style="width: 100%; padding: 10px; margin-bottom: 15px; background: #334155; color: white; border: 1px solid #475569; border-radius: 8px;">
+                        <option value="">Seleccionar Cliente...</option>
+                    </select>
+                    <button onclick="crearProyecto()">Crear Proyecto</button>
+                </div>
+
+                <!-- Crear Cliente Rápido -->
+                <div class="card" style="border-left: 3px solid var(--success);">
+                    <h4>Nuevo Cliente</h4>
+                    <input type="text" id="crear-nombre" placeholder="Nombre">
+                    <input type="email" id="crear-email" placeholder="Email">
+                    <input type="password" id="crear-pass" placeholder="Password">
+                    <button onclick="crearCliente()">Registrar Cliente</button>
+                </div>
+            </div>
+
+            <!-- TABLA DE USUARIOS (NUEVO) -->
+            <div style="margin-top: 20px; background: #1e293b; padding: 15px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h4 style="margin: 0;">👥 Listado de Usuarios</h4>
+                    <button onclick="cargarTablaUsuarios()"
+                        style="padding: 5px 10px; font-size: 0.8rem; background: var(--primary);">Refrescar</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                        <thead>
+                            <tr style="background: #334155; color: #fff;">
+                                <th style="padding: 10px; text-align: left;">ID</th>
+                                <th style="padding: 10px; text-align: left;">Nombre</th>
+                                <th style="padding: 10px; text-align: left;">Email</th>
+                                <th style="padding: 10px; text-align: left;">Rol</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-usuarios-body">
+                            <!-- JS insertará filas aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- LISTA DE PROYECTOS -->
+        <h3 style="border-bottom: 1px solid #334155; padding-bottom: 10px;">📂 Mis Proyectos</h3>
+        <div id="lista-proyectos" style="display: grid; gap: 1.5rem;">
+            <!-- Aquí se inyectan las tarjetas de proyecto -->
+            <p>Cargando proyectos...</p>
+        </div>
+
+    </section>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

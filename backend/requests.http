@@ -1,0 +1,230 @@
+### ==========================================
+### F&M WEB - Archivo de pruebas REST
+### ==========================================
+### Usa este archivo con la extensión "REST Client" de VS Code
+### o copia los comandos curl equivalentes para Postman/Terminal.
+###
+### IMPORTANTE: Las rutas /users, /clientes, /locations y /ai
+### requieren autenticación. Primero haz login para obtener el token,
+### luego copia el token en la variable @token de abajo.
+
+
+### ==========================================
+### 1. AUTH SERVICE (Rutas públicas)
+### ==========================================
+
+### Registrar usuario admin
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "nombre": "Admin Fabian",
+    "email": "admin@fmweb.com",
+    "password": "123",
+    "rol": "admin"
+}
+
+### Registrar moderador
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "nombre": "Moderador Test",
+    "email": "mod@fmweb.com",
+    "password": "123",
+    "rol": "moderador"
+}
+
+### Registrar cliente
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "nombre": "Cliente Test",
+    "email": "cliente@test.com",
+    "password": "123",
+    "rol": "cliente"
+}
+
+### Login (copia el "token" de la respuesta y pégalo abajo)
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "admin@fmweb.com",
+    "password": "123"
+}
+
+###  ⬇️ PEGA AQUÍ EL TOKEN QUE TE DEVUELVE EL LOGIN ⬇️
+@token = eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBmbXdlYi5jb20iLCJub21icmUiOiJBZG1pbiBGYWJpYW4iLCJyb2wiOiJhZG1pbiJ9
+
+
+### ==========================================
+### 2. USER SERVICE (Requiere autenticación)
+### ==========================================
+
+### Listar todos los usuarios
+GET http://localhost:3000/users
+Authorization: Bearer {{token}}
+
+### Listar solo clientes
+GET http://localhost:3000/users?rol=cliente
+Authorization: Bearer {{token}}
+
+### Listar clientes (alias /clientes)
+GET http://localhost:3000/clientes
+Authorization: Bearer {{token}}
+
+### Obtener usuario por ID
+GET http://localhost:3000/users/1
+Authorization: Bearer {{token}}
+
+### Crear usuario
+POST http://localhost:3000/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "nombre": "Nuevo Usuario",
+    "email": "nuevo@test.com",
+    "password": "123",
+    "rol": "cliente",
+    "telefono": "3001234567"
+}
+
+### Actualizar usuario
+PUT http://localhost:3000/users/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "nombre": "Nombre Actualizado",
+    "telefono": "3009999999"
+}
+
+### Eliminar usuario
+DELETE http://localhost:3000/users/3
+Authorization: Bearer {{token}}
+
+
+### ==========================================
+### 3. GEO SERVICE (Requiere autenticación)
+### ==========================================
+
+### Listar todas las ubicaciones
+GET http://localhost:3000/locations
+Authorization: Bearer {{token}}
+
+### Listar por tipo
+GET http://localhost:3000/locations?tipo=oficina
+Authorization: Bearer {{token}}
+
+### Crear ubicación (oficina)
+POST http://localhost:3000/locations
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "nombre": "Oficina Principal F&M",
+    "direccion": "Calle 100 #15-20, Bogotá",
+    "latitud": 4.6837,
+    "longitud": -74.0332,
+    "tipo": "oficina",
+    "descripcion": "Sede principal de F&M Web Solutions"
+}
+
+### Crear ubicación de proyecto
+POST http://localhost:3000/locations
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "nombre": "Proyecto Centro Comercial",
+    "direccion": "Av. Libertador 500, Caracas",
+    "latitud": 10.4806,
+    "longitud": -66.9036,
+    "tipo": "proyecto",
+    "descripcion": "Ubicación del proyecto web para el centro comercial"
+}
+
+### Obtener ubicación por ID
+GET http://localhost:3000/locations/1
+Authorization: Bearer {{token}}
+
+### Actualizar ubicación
+PUT http://localhost:3000/locations/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "nombre": "Oficina Principal F&M (Actualizada)",
+    "direccion": "Calle 100 #15-25, Bogotá"
+}
+
+### Eliminar ubicación
+DELETE http://localhost:3000/locations/1
+Authorization: Bearer {{token}}
+
+
+### ==========================================
+### 4. IA SERVICE - OpenAI (Requiere autenticación)
+### ==========================================
+
+### Análisis general de texto
+POST http://localhost:3000/ai/analyze
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "text": "F&M Web Solutions es una empresa dedicada al desarrollo de aplicaciones web modernas y profesionales. Ofrecemos servicios de diseño UI/UX, desarrollo frontend y backend.",
+    "type": "general"
+}
+
+### Análisis de sentimiento
+POST http://localhost:3000/ai/analyze
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "text": "El servicio fue excelente, estoy muy contento con el resultado. El diseño es perfecto y la calidad increíble.",
+    "type": "sentiment"
+}
+
+### Extracción de palabras clave
+POST http://localhost:3000/ai/analyze
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "text": "Desarrollo web con React y Node.js para crear aplicaciones escalables con bases de datos SQL y NoSQL en la nube",
+    "type": "keywords"
+}
+
+### Resumen de texto
+POST http://localhost:3000/ai/analyze
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "text": "Node.js es un entorno de ejecución para JavaScript. Permite construir aplicaciones del lado del servidor. Express es un framework minimalista para Node.js. Facilita la creación de APIs REST. React es una librería de JavaScript para construir interfaces de usuario. Se utiliza principalmente para aplicaciones de una sola página.",
+    "type": "summary"
+}
+
+
+### ==========================================
+### 5. i18n - Probar en inglés
+### ==========================================
+
+### Login en inglés
+POST http://localhost:3000/auth/login?lang=en
+Content-Type: application/json
+
+{
+    "email": "noexiste@test.com",
+    "password": "123"
+}
+
+### Listar usuarios en inglés (por header)
+GET http://localhost:3000/users
+Accept-Language: en
+Authorization: Bearer {{token}}

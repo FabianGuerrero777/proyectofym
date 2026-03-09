@@ -1,0 +1,147 @@
+### POSTMAN / REST CLIENT API TESTS
+### Usa la extensión de VSCode "REST Client" para ejecutar estas pruebas.
+### Puedes hacer click en "Send Request" justo encima de cada bloque.
+
+@baseUrl = http://localhost:3000
+
+---
+### 1. MICROSERVICIO AUTH
+---
+
+# Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "juan@test.com",
+  "password": "password123"
+}
+
+###
+
+# Register (Crear cuenta)
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "nombre": "Pedro Prueba",
+  "email": "pedro@test.com",
+  "password": "password123",
+  "rol": "cliente"
+}
+
+---
+### 2. MICROSERVICIO USERS / CLIENTES
+### Todos requieren Auth (envía el token si es necesario, aunque en desarrollo asume que los middlewares no te bloquean o incluye el header Authorization)
+---
+
+# Listar todos los clientes / usuarios
+GET {{baseUrl}}/clientes
+# Envía Authorization: Bearer <Token> si tu middleware lo pide
+# Authorization: Bearer {{$global.token}}
+
+###
+
+# Listar usuarios con un filtro de rol (ej: mod)
+GET {{baseUrl}}/users?rol=cliente
+
+###
+
+# Crear un cliente desde panel Admin (User Controller)
+POST {{baseUrl}}/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Empresa Test SA",
+  "email": "contacto@empresatest.com",
+  "password": "secure123",
+  "telefono": "+12345678"
+}
+
+---
+### 3. MICROSERVICIO GEO / LOCATIONS 
+---
+
+# Listar todas las ubicaciones
+GET {{baseUrl}}/locations
+
+###
+
+# Crear nueva ubicación
+# @name createLocation
+POST {{baseUrl}}/locations
+Content-Type: application/json
+
+{
+  "nombre": "Sede Principal F&M",
+  "direccion": "Calle Falsa 123",
+  "latitud": 40.7128,
+  "longitud": -74.0060,
+  "tipo": "oficina",
+  "descripcion": "Lugar donde hacemos desarrollo puro"
+}
+
+###
+
+# Actualizar ubicación existente (Reemplazar {id} con un ID alfanumérico generado en el POST anterior)
+PUT {{baseUrl}}/locations/{id}
+Content-Type: application/json
+
+{
+  "descripcion": "Oficina principal actualizada"
+}
+
+---
+### 4. MICROSERVICIO PROJECTS 
+---
+
+# Obtener proyectos de un usuario en orden
+GET {{baseUrl}}/projects/ID_DEL_USUARIO
+
+###
+
+# Crear un proyecto
+POST {{baseUrl}}/api/proyectos
+Content-Type: application/json
+
+{
+  "nombre": "App Móvil de Prueba",
+  "descripcion": "Una app genial usando Firebase Firestore",
+  "estado": "Pendiente",
+  "clienteId": "ID_DEL_USUARIO"
+}
+
+###
+
+# Actualizar progreso de un proyecto (ej: del 0 al 50%)
+PUT {{baseUrl}}/api/proyectos/{id}
+Content-Type: application/json
+
+{
+    "progreso": 50
+}
+
+###
+
+# Agregar un pago a un proyecto (Subcolección Firestore)
+POST {{baseUrl}}/api/pagos
+Content-Type: application/json
+
+{
+    "proyectoId": "{id_del_proyecto}",
+    "monto": 1500,
+    "descripcion": "Anticipo de desarrollo"
+}
+
+###
+
+# Dejar comentario del cliente sobre un proyecto
+POST {{baseUrl}}/api/projects/{id_del_proyecto}/comments
+Content-Type: application/json
+
+{
+    "texto": "¡Wow, qué rápido va el desarrollo! Bofff 🔥",
+    "actitud": "🎉 Muy feliz",
+    "usuarioId": "ID_DEL_CLIENTE"
+}

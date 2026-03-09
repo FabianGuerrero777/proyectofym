@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>F&M - Soluciones Web Profesionales</title>
+    <meta name="description"
+        content="F&M Web Solutions - Desarrollo web profesional, diseño UI/UX, apps móviles y backend escalable.">
+
+    <!-- React 18 CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0f0f1a',
+                        darkCard: 'rgba(255, 255, 255, 0.05)',
+                        lightBg: '#f8fafc',
+                        lightCard: '#ffffff',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome (iconos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <!-- Google Font: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Firebase SDK (compat mode para usar con CDN) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyClt8PlICNzcCT06ywQeTfWnnR8k9C4kpc",
+            authDomain: "fandmwebuni.firebaseapp.com",
+            projectId: "fandmwebuni",
+            storageBucket: "fandmwebuni.firebasestorage.app",
+            messagingSenderId: "264070030185",
+            appId: "1:264070030185:web:dde24d68c941fea4d4d3f8",
+            measurementId: "G-K89R3ZQQVS"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <!-- Leaflet (Mapa interactivo) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Estilos propios -->
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body class="bg-lightBg text-gray-900 dark:bg-darkBg dark:text-white antialiased transition-colors duration-300">
+    <div id="root"></div>
+
+    <!-- App React -->
+    <script type="text/babel" src="app.js"></script>
+</body>
+
+</html>

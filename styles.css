@@ -1,0 +1,148 @@
+/* VARIABLES GLOBALES: Para cambiar colores fácil */
+:root {
+    --bg-color: #0f172a;       /* Azul muy oscuro (fondo) */
+    --card-bg: #1e293b;        /* Gris azulado (tarjetas) */
+    --text-primary: #f8fafc;   /* Blanco casi puro */
+    --text-secondary: #94a3b8; /* Gris claro */
+    --accent: #3b82f6;         /* Azul brillante (Botones) */
+    --accent-hover: #2563eb;   
+    --danger: #ef4444;         /* Rojo (Cerrar sesión/Borrar) */
+    --success: #22c55e;        /* Verde (Finalizado) */
+    --warning: #eab308;        /* Amarillo (Pendiente) */
+    --info: #0ea5e9;           /* Celeste (En desarrollo) */
+}
+
+/* RESET BÁSICO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6); /* Degradado chulo */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
+
+h2 { margin-bottom: 1rem; font-size: 1.5rem; }
+h3 { margin-bottom: 0.5rem; color: var(--text-secondary); }
+
+/* CLASES DE UTILIDAD */
+.hidden { display: none !important; }
+
+/* CONTENEDORES PRINCIPALES */
+#login-section, #cliente-section, #admin-section {
+    width: 100%;
+    max-width: 500px; /* En PC no se estira tanto */
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); /* Sombra elegante */
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+#admin-section { max-width: 800px; } /* El panel admin es más ancho */
+
+/* FORMULARIOS E INPUTS */
+input {
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 15px;
+    background-color: #334155;
+    border: 1px solid #475569;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+/* BOTONES ESTILIZADOS */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    font-size: 1rem;
+}
+
+button:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px); /* Efecto de elevación */
+}
+
+button.logout-btn {
+    background-color: transparent;
+    border: 1px solid var(--danger);
+    color: var(--danger);
+    margin-top: 20px;
+}
+
+button.logout-btn:hover {
+    background-color: var(--danger);
+    color: white;
+}
+
+/* TARJETAS DE PROYECTOS (CARD UI) */
+.card {
+    background-color: #0f172a; /* Fondo más oscuro dentro de la tarjeta */
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    border-left: 5px solid var(--accent); /* Borde lateral decorativo */
+}
+
+/* ETICKETS DE ESTADO (BADGES) */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 10px;
+}
+
+.pendiente { background-color: rgba(234, 179, 8, 0.2); color: var(--warning); border: 1px solid var(--warning); }
+.desarrollo { background-color: rgba(14, 165, 233, 0.2); color: var(--info); border: 1px solid var(--info); }
+.finalizado { background-color: rgba(34, 197, 94, 0.2); color: var(--success); border: 1px solid var(--success); }
+
+/* ANIMACIÓN SUAVE DE ENTRADA */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE (RF-10) */
+@media (max-width: 600px) {
+    body { padding: 10px; }
+    h1 { font-size: 1.5rem; }
+    #login-section, #cliente-section, #admin-section { padding: 1.5rem; }
+}

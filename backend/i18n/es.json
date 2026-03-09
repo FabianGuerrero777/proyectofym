@@ -1,0 +1,146 @@
+{
+    "auth": {
+        "loginSuccess": "Inicio de sesión exitoso",
+        "loginFail": "Credenciales inválidas",
+        "registerSuccess": "Usuario registrado exitosamente",
+        "registerFail": "Error al registrar usuario",
+        "noToken": "No se proporcionó token de autenticación",
+        "invalidToken": "Token inválido o expirado",
+        "userNotFound": "Usuario no encontrado"
+    },
+    "users": {
+        "listSuccess": "Lista de usuarios obtenida",
+        "createSuccess": "Usuario creado exitosamente",
+        "updateSuccess": "Usuario actualizado exitosamente",
+        "deleteSuccess": "Usuario eliminado exitosamente",
+        "notFound": "Usuario no encontrado",
+        "error": "Error al procesar la solicitud de usuario"
+    },
+    "projects": {
+        "listSuccess": "Lista de proyectos obtenida",
+        "createSuccess": "Proyecto creado exitosamente",
+        "updateSuccess": "Proyecto actualizado exitosamente",
+        "deleteSuccess": "Proyecto eliminado exitosamente",
+        "notFound": "Proyecto no encontrado"
+    },
+    "locations": {
+        "listSuccess": "Lista de ubicaciones obtenida",
+        "createSuccess": "Ubicación creada exitosamente",
+        "updateSuccess": "Ubicación actualizada exitosamente",
+        "deleteSuccess": "Ubicación eliminada exitosamente",
+        "notFound": "Ubicación no encontrada",
+        "error": "Error al procesar la ubicación"
+    },
+    "ia": {
+        "analyzeSuccess": "Análisis completado exitosamente",
+        "analyzeError": "Error al realizar el análisis",
+        "noText": "Se requiere texto para analizar"
+    },
+    "general": {
+        "serverError": "Error interno del servidor",
+        "notFound": "Recurso no encontrado",
+        "success": "Operación exitosa"
+    },
+    "frontend": {
+        "nav": {
+            "home": "Inicio",
+            "services": "Servicios",
+            "contact": "Contacto",
+            "login": "Iniciar Sesión",
+            "dashboard": "Panel"
+        },
+        "hero": {
+            "title1": "Diseñamos tu presencia",
+            "title2": "digital perfecta.",
+            "desc": "Desarrollo web profesional, moderno y a la medida. Llevamos tu negocio al siguiente nivel con tecnología de punta."
+        },
+        "services": {
+            "title": "Nuestros Servicios",
+            "items": [
+                {
+                    "icon": "fas fa-laptop-code",
+                    "title": "Desarrollo Web",
+                    "desc": "Sitios web modernos, rápidos y responsivos con las últimas tecnologías."
+                },
+                {
+                    "icon": "fas fa-mobile-alt",
+                    "title": "Apps Móviles",
+                    "desc": "Aplicaciones nativas y multiplataforma para iOS y Android."
+                },
+                {
+                    "icon": "fas fa-paint-brush",
+                    "title": "Diseño UI/UX",
+                    "desc": "Interfaces intuitivas y atractivas que enamoran a tus usuarios."
+                },
+                {
+                    "icon": "fas fa-server",
+                    "title": "Backend & APIs",
+                    "desc": "Arquitectura robusta y escalable para tu aplicación."
+                }
+            ]
+        },
+        "contact": {
+            "title": "Inicia tu Proyecto",
+            "name": "Tu Nombre",
+            "email": "Tu Email",
+            "project": "Tipo de Proyecto",
+            "desc": "Describe tu idea...",
+            "submit": "Enviar por WhatsApp"
+        },
+        "footer": "© 2026 F&M Web Solutions. Todos los derechos reservados.",
+        "login": {
+            "title": "Iniciar Sesión",
+            "email": "Correo Electrónico",
+            "password": "Contraseña",
+            "submit": "Ingresar",
+            "error": "Credenciales inválidas",
+            "google": "Iniciar sesión con Google",
+            "or": "o con email y contraseña",
+            "createTest": "🛠️ Crear usuarios de prueba"
+        },
+        "dashboard": {
+            "greeting": "Hola,",
+            "role": "Rol",
+            "logout": "Cerrar Sesión",
+            "backToSite": "← Volver al Sitio",
+            "projects": "Mis Proyectos",
+            "noProjects": "No tienes proyectos asignados aún.",
+            "adminPanel": "Panel de Administrador",
+            "newProject": "Nuevo Proyecto",
+            "projectName": "Nombre del Proyecto",
+            "projectDesc": "Descripción",
+            "selectClient": "Seleccionar Cliente...",
+            "createProject": "Crear Proyecto",
+            "newClient": "Nuevo Cliente",
+            "clientName": "Nombre",
+            "clientEmail": "Email",
+            "clientPass": "Contraseña",
+            "registerClient": "Registrar Cliente",
+            "userList": "Listado de Usuarios",
+            "refresh": "Refrescar",
+            "payments": "Historial de Pagos",
+            "noPayments": "No hay pagos registrados.",
+            "payAmount": "Monto del pago:",
+            "payDesc": "Descripción (ej. Anticipo):",
+            "editUser": "Editar Usuario",
+            "deleteUser": "Eliminar",
+            "deleteProject": "Eliminar Proyecto",
+            "confirmDelete": "¿Estás seguro de que quieres eliminar esto?",
+            "projectCreated": "¡Proyecto Creado!",
+            "clientCreated": "¡Cliente Registrado!",
+            "userUpdated": "¡Usuario Actualizado!",
+            "userDeleted": "¡Usuario Eliminado!",
+            "projectDeleted": "¡Proyecto Eliminado!"
+        },
+        "ia": {
+            "title": "Asistente IA (ChatGPT)",
+            "placeholder": "Escribe o pega un texto para analizar con IA...",
+            "general": "📊 Análisis General",
+            "sentiment": "😊 Sentimiento",
+            "keywords": "🔑 Palabras Clave",
+            "summary": "📝 Resumen",
+            "analyze": "🚀 Analizar",
+            "noText": "Ingresa un texto para analizar"
+        }
+    }
+}

@@ -1,0 +1,146 @@
+{
+    "auth": {
+        "loginSuccess": "Login successful",
+        "loginFail": "Invalid credentials",
+        "registerSuccess": "User registered successfully",
+        "registerFail": "Error registering user",
+        "noToken": "No authentication token provided",
+        "invalidToken": "Invalid or expired token",
+        "userNotFound": "User not found"
+    },
+    "users": {
+        "listSuccess": "User list retrieved",
+        "createSuccess": "User created successfully",
+        "updateSuccess": "User updated successfully",
+        "deleteSuccess": "User deleted successfully",
+        "notFound": "User not found",
+        "error": "Error processing user request"
+    },
+    "projects": {
+        "listSuccess": "Project list retrieved",
+        "createSuccess": "Project created successfully",
+        "updateSuccess": "Project updated successfully",
+        "deleteSuccess": "Project deleted successfully",
+        "notFound": "Project not found"
+    },
+    "locations": {
+        "listSuccess": "Location list retrieved",
+        "createSuccess": "Location created successfully",
+        "updateSuccess": "Location updated successfully",
+        "deleteSuccess": "Location deleted successfully",
+        "notFound": "Location not found",
+        "error": "Error processing location"
+    },
+    "ia": {
+        "analyzeSuccess": "Analysis completed successfully",
+        "analyzeError": "Error performing analysis",
+        "noText": "Text is required for analysis"
+    },
+    "general": {
+        "serverError": "Internal server error",
+        "notFound": "Resource not found",
+        "success": "Operation successful"
+    },
+    "frontend": {
+        "nav": {
+            "home": "Home",
+            "services": "Services",
+            "contact": "Contact",
+            "login": "Login",
+            "dashboard": "Dashboard"
+        },
+        "hero": {
+            "title1": "We design your perfect",
+            "title2": "digital presence.",
+            "desc": "Professional, modern and custom web development. We take your business to the next level with cutting-edge technology."
+        },
+        "services": {
+            "title": "Our Services",
+            "items": [
+                {
+                    "icon": "fas fa-laptop-code",
+                    "title": "Web Development",
+                    "desc": "Modern, fast and responsive websites with the latest technologies."
+                },
+                {
+                    "icon": "fas fa-mobile-alt",
+                    "title": "Mobile Apps",
+                    "desc": "Native and cross-platform applications for iOS and Android."
+                },
+                {
+                    "icon": "fas fa-paint-brush",
+                    "title": "UI/UX Design",
+                    "desc": "Intuitive and attractive interfaces that delight your users."
+                },
+                {
+                    "icon": "fas fa-server",
+                    "title": "Backend & APIs",
+                    "desc": "Robust and scalable architecture for your application."
+                }
+            ]
+        },
+        "contact": {
+            "title": "Start your Project",
+            "name": "Your Name",
+            "email": "Your Email",
+            "project": "Project Type",
+            "desc": "Describe your idea...",
+            "submit": "Send via WhatsApp"
+        },
+        "footer": "© 2026 F&M Web Solutions. All rights reserved.",
+        "login": {
+            "title": "Login",
+            "email": "Email",
+            "password": "Password",
+            "submit": "Sign In",
+            "error": "Invalid credentials",
+            "google": "Sign in with Google",
+            "or": "or with email and password",
+            "createTest": "🛠️ Create test users"
+        },
+        "dashboard": {
+            "greeting": "Hello,",
+            "role": "Role",
+            "logout": "Logout",
+            "backToSite": "← Back to Site",
+            "projects": "My Projects",
+            "noProjects": "No projects assigned yet.",
+            "adminPanel": "Admin Panel",
+            "newProject": "New Project",
+            "projectName": "Project Name",
+            "projectDesc": "Description",
+            "selectClient": "Select Client...",
+            "createProject": "Create Project",
+            "newClient": "New Client",
+            "clientName": "Name",
+            "clientEmail": "Email",
+            "clientPass": "Password",
+            "registerClient": "Register Client",
+            "userList": "User List",
+            "refresh": "Refresh",
+            "payments": "Payment History",
+            "noPayments": "No payments recorded.",
+            "payAmount": "Payment amount:",
+            "payDesc": "Description (e.g. Deposit):",
+            "editUser": "Edit User",
+            "deleteUser": "Delete",
+            "deleteProject": "Delete Project",
+            "confirmDelete": "Are you sure you want to delete this?",
+            "projectCreated": "Project Created!",
+            "clientCreated": "Client Registered!",
+            "userUpdated": "User Updated!",
+            "userDeleted": "User Deleted!",
+            "projectDeleted": "Project Deleted!"
+        },
+        "ia": {
+            "title": "AI Assistant (ChatGPT)",
+            "placeholder": "Type or paste text to analyze with AI...",
+            "general": "📊 General Analysis",
+            "sentiment": "😊 Sentiment",
+            "keywords": "🔑 Keywords",
+            "summary": "📝 Summary",
+            "analyze": "🚀 Analyze",
+            "noText": "Enter text to analyze"
+        }
+    }
+}
