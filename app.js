@@ -2,8 +2,24 @@ const API_URL = 'http://localhost:3000/api';
 let currentUser = null;
 
 // ==========================================
-// 1. AUTENTICACIÓN
+// 1. AUTENTICACIÓN Y MODO VISUAL
 // ==========================================
+
+function verDiseno() {
+    currentUser = { id: 0, nombre: "Profesor (Sin BD)", rol: "admin" };
+    
+    document.getElementById('login-section').classList.add('hidden');
+    document.getElementById('dashboard-section').classList.remove('hidden');
+
+    document.getElementById('usuario-nombre').innerText = currentUser.nombre;
+    document.getElementById('usuario-rol').innerText = currentUser.rol;
+    document.getElementById('admin-controls').classList.remove('hidden');
+    
+    // Dejar listas vacías con mensajes decorativos porque no hay BD
+    document.getElementById('nuevo-cliente-id').innerHTML = '<option>-- Modo de diseño visual --</option>';
+    document.getElementById('tabla-usuarios-body').innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 10px;">(Sin conexión - Datos vacíos)</td></tr>';
+    document.getElementById('lista-proyectos').innerHTML = '<div class="card" style="text-align:center; color:#94a3b8;"><p>Modo visual: Los proyectos irían aquí</p></div>';
+}
 
 async function login() {
     const email = document.getElementById('email').value;

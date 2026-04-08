@@ -193,6 +193,13 @@ const LoginModal = ({ t, onClose, onLogin }) => {
         setLoading(false);
     };
 
+    const verDiseno = () => {
+        const dummyUser = { id: '000', nombre: "Profesor (Modo Visual)", rol: "admin" };
+        localStorage.setItem('currentUser', JSON.stringify(dummyUser));
+        onLogin(dummyUser);
+        onClose();
+    };
+
     return (
         <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
             <div className="modal-content bg-white dark:bg-[#1a1a2e] border border-gray-200 dark:border-white/10 rounded-3xl p-8 md:p-10 w-full max-w-md shadow-2xl">
@@ -234,6 +241,9 @@ const LoginModal = ({ t, onClose, onLogin }) => {
                 </form>
 
                 <p className="text-center mt-4">
+                    <button onClick={verDiseno} className="text-emerald-500 font-bold hover:text-emerald-400 text-sm transition mb-2 block w-full">
+                        👁️ Ver diseño del panel (Sin Base de Datos)
+                    </button>
                     <button onClick={crearDatosPrueba} className="text-pink-500 hover:text-pink-400 text-sm font-medium transition">
                         {t.login.createTest}
                     </button>
@@ -1103,8 +1113,111 @@ const App = () => {
                 setTimeout(() => setFading(false), 50);
             })
             .catch(err => {
-                console.error("Error cargando idiomas:", err);
-                setFading(false);
+                console.warn("Backend no detectado. Usando modo offline visual (Fallback de traducción).");
+                const fallbackTranslations = {
+                    "nav": {
+                        "home": "Inicio",
+                        "services": "Servicios",
+                        "contact": "Contacto",
+                        "login": "Iniciar Sesión",
+                        "dashboard": "Panel"
+                    },
+                    "hero": {
+                        "title1": "Diseñamos tu presencia",
+                        "title2": "digital perfecta.",
+                        "desc": "Desarrollo web profesional, moderno y a la medida. Llevamos tu negocio al siguiente nivel con tecnología de punta."
+                    },
+                    "services": {
+                        "title": "Nuestros Servicios",
+                        "items": [
+                            {
+                                "icon": "fas fa-laptop-code",
+                                "title": "Desarrollo Web",
+                                "desc": "Sitios web modernos, rápidos y responsivos con las últimas tecnologías."
+                            },
+                            {
+                                "icon": "fas fa-mobile-alt",
+                                "title": "Apps Móviles",
+                                "desc": "Aplicaciones nativas y multiplataforma para iOS y Android."
+                            },
+                            {
+                                "icon": "fas fa-paint-brush",
+                                "title": "Diseño UI/UX",
+                                "desc": "Interfaces intuitivas y atractivas que enamoran a tus usuarios."
+                            },
+                            {
+                                "icon": "fas fa-server",
+                                "title": "Backend & APIs",
+                                "desc": "Arquitectura robusta y escalable para tu aplicación."
+                            }
+                        ]
+                    },
+                    "contact": {
+                        "title": "Inicia tu Proyecto",
+                        "name": "Tu Nombre",
+                        "email": "Tu Email",
+                        "project": "Tipo de Proyecto",
+                        "desc": "Describe tu idea...",
+                        "submit": "Enviar por WhatsApp"
+                    },
+                    "footer": "© 2026 F&M Web Solutions. Todos los derechos reservados.",
+                    "login": {
+                        "title": "Iniciar Sesión",
+                        "email": "Correo Electrónico",
+                        "password": "Contraseña",
+                        "submit": "Ingresar",
+                        "error": "Credenciales inválidas",
+                        "google": "Iniciar sesión con Google",
+                        "or": "o con email y contraseña",
+                        "createTest": "🛠️ Crear usuarios de prueba"
+                    },
+                    "dashboard": {
+                        "greeting": "Hola,",
+                        "role": "Rol",
+                        "logout": "Cerrar Sesión",
+                        "backToSite": "← Volver al Sitio",
+                        "projects": "Mis Proyectos",
+                        "noProjects": "No tienes proyectos asignados aún.",
+                        "adminPanel": "Panel de Administrador",
+                        "newProject": "Nuevo Proyecto",
+                        "projectName": "Nombre del Proyecto",
+                        "projectDesc": "Descripción",
+                        "selectClient": "Seleccionar Cliente...",
+                        "createProject": "Crear Proyecto",
+                        "newClient": "Nuevo Cliente",
+                        "clientName": "Nombre",
+                        "clientEmail": "Email",
+                        "clientPass": "Contraseña",
+                        "registerClient": "Registrar Cliente",
+                        "userList": "Listado de Usuarios",
+                        "refresh": "Refrescar",
+                        "payments": "Historial de Pagos",
+                        "noPayments": "No hay pagos registrados.",
+                        "payAmount": "Monto del pago:",
+                        "payDesc": "Descripción (ej. Anticipo):",
+                        "editUser": "Editar Usuario",
+                        "deleteUser": "Eliminar",
+                        "deleteProject": "Eliminar Proyecto",
+                        "confirmDelete": "¿Estás seguro de que quieres eliminar esto?",
+                        "projectCreated": "¡Proyecto Creado!",
+                        "clientCreated": "¡Cliente Registrado!",
+                        "userUpdated": "¡Usuario Actualizado!",
+                        "userDeleted": "¡Usuario Eliminado!",
+                        "projectDeleted": "¡Proyecto Eliminado!"
+                    },
+                    "ia": {
+                        "title": "Asistente IA (ChatGPT)",
+                        "placeholder": "Escribe o pega un texto para analizar con IA...",
+                        "general": "📊 Análisis General",
+                        "sentiment": "😊 Sentimiento",
+                        "keywords": "🔑 Palabras Clave",
+                        "summary": "📝 Resumen",
+                        "analyze": "🚀 Analizar",
+                        "noText": "Ingresa un texto para analizar"
+                    }
+                };
+                setTranslations(fallbackTranslations);
+                setTimeout(() => setFading(false), 50);
             });
     }, [lang]);
 

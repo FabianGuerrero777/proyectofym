@@ -199,10 +199,10 @@ app.post('/api/login', async (req, res) => {
         const usersRef = db.collection('usuarios');
         const snapshot = await usersRef.where('email', '==', email).limit(1).get();
         if (snapshot.empty) return res.status(401).json({ success: false, message: 'Credenciales inválidas' });
-        
+
         const userDoc = snapshot.docs[0];
         const user = { ...userDoc.data(), id: userDoc.id };
-        
+
         const match = await bcrypt.compare(password, user.password);
         if (!match) return res.status(401).json({ success: false, message: 'Credenciales inválidas' });
         res.json({ success: true, user });
@@ -213,11 +213,11 @@ app.post('/api/register', async (req, res) => {
     try {
         const { nombre, email, password, rol } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
-        
+
         const newUserRef = db.collection('usuarios').doc();
         const userData = { nombre, email, password: hashedPassword, rol: rol || 'cliente' };
         await newUserRef.set(userData);
-        
+
         res.json({ success: true, usuario: { id: newUserRef.id, ...userData } });
     } catch (error) { res.status(500).json({ success: false, message: error.message }); }
 });
@@ -246,14 +246,14 @@ app.put('/api/usuarios/:id', async (req, res) => {
         const userRef = db.collection('usuarios').doc(req.params.id);
         const doc = await userRef.get();
         if (!doc.exists) return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
-        
+
         const updateData = {};
         if (req.body.nombre) updateData.nombre = req.body.nombre;
         if (req.body.email) updateData.email = req.body.email;
         if (req.body.rol) updateData.rol = req.body.rol;
         if (req.body.telefono) updateData.telefono = req.body.telefono;
         if (req.body.password) updateData.password = await bcrypt.hash(req.body.password, 10);
-        
+
         await userRef.update(updateData);
         res.json({ success: true, usuario: { id: doc.id, ...doc.data(), ...updateData } });
     } catch (error) { res.status(500).json({ success: false, message: error.message }); }
@@ -275,21 +275,21 @@ app.get('/api/proyectos/:userId', async (req, res) => {
         const userRef = db.collection('usuarios').doc(userId);
         const userDoc = await userRef.get();
         if (!userDoc.exists) return res.status(404).json({ message: 'Usuario no encontrado' });
-        
+
         const userData = userDoc.data();
         let proyectosQuery = db.collection('proyectos');
-        
+
         if (userData.rol !== 'admin' && userData.rol !== 'moderador') {
             proyectosQuery = proyectosQuery.where('clienteId', '==', userId);
         }
-        
+
         const snapshot = await proyectosQuery.get();
         const proyectos = [];
-        
+
         for (const doc of snapshot.docs) {
             const data = doc.data();
             const proyecto = { ...data, id: doc.id };
-            
+
             // Hidratar cliente
             if (data.clienteId) {
                 const clienteDoc = await db.collection('usuarios').doc(data.clienteId).get();
@@ -297,11 +297,11 @@ app.get('/api/proyectos/:userId', async (req, res) => {
                     proyecto.cliente = { ...clienteDoc.data(), id: clienteDoc.id };
                 }
             }
-            
+
             // Obtener pagos
             const pagosSnap = await db.collection(`proyectos/${doc.id}/pagos`).get();
             proyecto.Pagos = pagosSnap.docs.map(p => ({ id: p.id, ...p.data() }));
-            
+
             // Obtener comentarios
             const comSnap = await db.collection(`proyectos/${doc.id}/comentarios`).get();
             const comentarios = [];
@@ -315,7 +315,7 @@ app.get('/api/proyectos/:userId', async (req, res) => {
                 comentarios.push(comObj);
             }
             proyecto.Comentarios = comentarios;
-            
+
             proyectos.push(proyecto);
         }
         res.json(proyectos);
